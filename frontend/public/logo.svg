@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="60" height="60">
+  <!-- Background Circle -->
+  <circle cx="30" cy="30" r="28" fill="#0075ff" />
+  
+  <!-- Letter W -->
+  <path d="M15,18 L22,42 L27,42 L30,30 L33,42 L38,42 L45,18 L39,18 L35,34 L31,18 L29,18 L25,34 L21,18 Z" fill="white" />
+  
+  <!-- Small Wing Accent -->
+  <path d="M20,13 L30,10 L40,13 L30,16 Z" fill="white" />
+</svg>

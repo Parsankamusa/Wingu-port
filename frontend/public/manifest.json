@@ -1,0 +1,21 @@
+{
+  "short_name": "WinguPort",
+  "name": "WinguPort - Aviation Recruitment System",
+  "description": "Connecting the world's best aviation talent with premier opportunities.",
+  "icons": [
+    {
+      "src": "/logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#005ecc",
+  "background_color": "#f8fafc"
+}

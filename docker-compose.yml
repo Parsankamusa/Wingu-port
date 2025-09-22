@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-local
+    restart: always
+    environment:
+      POSTGRES_USER: winguuser
+      POSTGRES_PASSWORD: wingupass
+      POSTGRES_DB: winguport
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data_local:/var/lib/postgresql/data
+    networks:
+      - wingu-net
+
+  backend:
+    build: ./backend
+    container_name: backend-local
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: winguport
+      DB_USER: winguuser
+      DB_PASSWORD: wingupass
+    networks:
+      - wingu-net
+
+  frontend:
+    build: ./frontend
+    container_name: frontend-local
+    ports:
+      - "81:80"
+    depends_on:
+      - backend
+    networks:
+      - wingu-net
+
+volumes:
+  postgres_data_local:
+
+networks:
+  wingu-net:
+    driver: bridge
