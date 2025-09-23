@@ -265,14 +265,14 @@ class ProfessionalRoles(models.Model):
         verbose_name_plural = _('Professional Roles')
 
 
-
 class Qualifications(models.Model):
-    """Model for professional qualifications and education."""
+    """Model for professional qualifications, education, and compliance documents."""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='qualifications')
-    
+
+    # --- Academic Background ---
     EDUCATION_LEVEL_CHOICES = [
-        ('high_school', _('High_School')),
         ('primary', _('Primary')),
+        ('high_school', _('High School')),
         ('certificate', _('Certificate')),
         ('diploma', _('Diploma')),
         ('degree', _('Degree')),
@@ -285,101 +285,58 @@ class Qualifications(models.Model):
         choices=EDUCATION_LEVEL_CHOICES,
         verbose_name=_('Highest Education Level')
     )
-    
-    course_of_study = models.CharField(
-        max_length=200, 
-        verbose_name=_('Course of Study')
-    )
-    
-    institution = models.CharField(
-        max_length=200,
-        verbose_name=_('Institution')
-    )
-    
-    country = models.CharField(
-    max_length=100,
-    verbose_name=_('Country of Institution'),
-    blank=True,
-    null=True
-)
-    
-    expected_graduation_year = models.CharField(
-        max_length=10,
-        verbose_name=_('Expected Graduation Year')
-    )
-    
-    aviation_certifications = models.TextField(
+    course_of_study = models.CharField(max_length=200, verbose_name=_('Course of Study'))
+    institution = models.CharField(max_length=200, verbose_name=_('Institution'))
+    country = models.CharField(max_length=100, verbose_name=_('Country of Institution'), blank=True, null=True)
+    expected_graduation_year = models.CharField(max_length=10, verbose_name=_('Expected Graduation Year'), blank=True, null=True)
+
+    cv_resume = models.FileField(upload_to='documents/cv/', verbose_name=_("CV / Resume"), blank=True, null=True)
+    passport_copy = models.FileField(upload_to='documents/passport/', verbose_name=_("Passport Copy"), blank=True, null=True)
+    passport_expiry = models.DateField(blank=True, null=True, verbose_name=_("Passport Expiry Date"))
+
+    national_id = models.FileField(upload_to='documents/national_id/', verbose_name=_("National ID"), blank=True, null=True)
+
+    academic_certificates = models.FileField(
+        upload_to='documents/academic/',
+        verbose_name=_("Academic Certificates"),
         blank=True,
-        null=True,
-        help_text=_('Aviation-specific certifications separated by commas')
-    )
-    
-    aviation_certifications_expiry = models.DateField(
-        blank=True,
-        null=True,
-        verbose_name=_('Certification Expiry Date')
+        null=True
     )
 
-    certificate_upload = models.FileField(
-        upload_to='certificates/',
+    aviation_licenses = models.FileField(upload_to='documents/licenses/', verbose_name=_("Aviation Licenses"), blank=True, null=True)
+    license_expiry = models.DateField(blank=True, null=True, verbose_name=_("License Expiry Date"))
+
+    type_ratings_endorsements = models.FileField(
+        upload_to='documents/type_ratings/',
+        verbose_name=_("Type Ratings & Endorsements"),
         blank=True,
-        null=True,
-        verbose_name=_('Certificate Upload')
+        null=True
     )
-    
-    gpa = models.DecimalField(
-        max_digits=3,
-        decimal_places=2,
+    type_rating_expiry = models.DateField(blank=True, null=True, verbose_name=_("Type Rating Expiry"))
+
+    medical_certificate = models.FileField(upload_to='documents/medical/', verbose_name=_("Medical Certificate"), blank=True, null=True)
+    medical_expiry = models.DateField(blank=True, null=True, verbose_name=_("Medical Certificate Expiry"))
+
+    professional_certifications = models.FileField(
+        upload_to='documents/professional_certifications/',
+        verbose_name=_("Professional Certifications"),
         blank=True,
-        null=True,
-        verbose_name=_('GPA Attained')
+        null=True
     )
-    
-    professional_development_courses = models.TextField(
-        blank=True,
-        null=True,
-        help_text=_('Short courses or professional development programs')
-    )
-    
-    professional_development_upload = models.FileField(
-        upload_to='professional_development/',
-        blank=True,
-        null=True,
-        verbose_name=_('Supporting Documents')
-    )
-    workshops_seminars = models.TextField(
-        blank=True,
-        null=True,
-        help_text=_('Workshops and seminars attended')
-    )
-    workshops_upload = models.FileField(
-        upload_to='workshops/',
-        blank=True,
-        null=True,
-        verbose_name=_('Workshop Certificates')
-    )
-    
-    continuous_training_records = models.TextField(
-        blank=True,
-        null=True,
-        help_text=_('Recurrent/mandatory training records')
-    )
-    continuous_training_last_completed = models.DateField(
-        blank=True,
-        null=True,
-        verbose_name=_('Last Training Completed')
-    )
-    continuous_training_expiry = models.DateField(
-        blank=True,
-        null=True,
-        verbose_name=_('Training Expiry Date')
-    )
-    continuous_training_upload = models.FileField(
-        upload_to='continuous_training/',
-        blank=True,
-        null=True,
-        verbose_name=_('Training Records')
-    )
+    professional_certifications_expiry = models.DateField(blank=True, null=True, verbose_name=_("Certifications Expiry Date"))
+
+    training_records = models.FileField(upload_to='documents/training/', verbose_name=_("Training Records"), blank=True, null=True)
+    training_last_completed = models.DateField(blank=True, null=True, verbose_name=_("Last Training Completed"))
+    training_expiry = models.DateField(blank=True, null=True, verbose_name=_("Training Expiry Date"))
+
+    employment_references = models.FileField(upload_to='documents/references/', verbose_name=_("Employment Reference Letters"), blank=True, null=True)
+    employment_contracts = models.FileField(upload_to='documents/contracts/', verbose_name=_("Employment Contracts"), blank=True, null=True)
+
+    logbooks = models.FileField(upload_to='documents/logbooks/', verbose_name=_("Logbooks / Duty Records"), blank=True, null=True)
+    memberships = models.FileField(upload_to='documents/memberships/', verbose_name=_("Membership Certificates"), blank=True, null=True)
+    security_clearances = models.FileField(upload_to='documents/security_clearances/', verbose_name=_("Security Clearances"), blank=True, null=True)
+
+    gpa = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True, verbose_name=_('GPA Attained'))
 
     def __str__(self):
         return f"{self.user.email} - {self.highest_education_level} in {self.course_of_study}"
@@ -388,20 +345,11 @@ class Qualifications(models.Model):
         verbose_name = _('Qualification')
         verbose_name_plural = _('Qualifications')
 
-#repetition of imports
-from django.db import models
-from django.contrib.auth import get_user_model
-from django.utils.translation import gettext_lazy as _
-
-User = get_user_model()
-
-
 class LicensesRatings(models.Model):
     """Model for professional aviation licenses & ratings."""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="licenses")
 
-    # License Type
     LICENSE_TYPE_CHOICES = [
         ('spl', _('Student Pilot Licence (SPL)')),
         ('ppl', _('Private Pilot Licence (PPL)')),
@@ -537,37 +485,23 @@ class LicensesRatings(models.Model):
         verbose_name = _("License & Rating")
         verbose_name_plural = _("Licenses & Ratings")
 
-    def parse_license_info(self):
-        """
-        Parse uploaded license file to extract information if possible.
-        This method will attempt to extract information from the uploaded license file
-        
-        
-        This is a stub method that should be implemented with actual OCR functionality.
-        """
-        if not self.license_upload:
-            return False
-        
-        try:
-            return True
-        except Exception as e:
-            # Log the error
-            print(f"Error parsing license: {str(e)}")
-            return False
+
 
 class EmploymentHistory(models.Model):
     """Model for user's employment history."""
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='employment_history')
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name='employment_history')
     company_name = models.CharField(max_length=255)
     job_title = models.CharField(max_length=255)
     start_date = models.DateField(help_text=_("Employment start date"))
     end_date = models.DateField(null=True, blank=True, help_text=_("Employment end date (leave blank if current)"))
     is_current = models.BooleanField(default=False, help_text=_("Check if this is your current employment"))
+    
     responsibilities = models.TextField()
     reason_leaving = models.TextField()
     salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    nature_of_employer_choice =[
-       ('Airline', 'Airline'),
+
+    nature_of_employer_choice = [
+        ('Airline', 'Airline'),
         ('Charter Operator', 'Charter Operator'),
         ('MRO', 'MRO'),
         ('Training', 'Training'),
@@ -579,33 +513,32 @@ class EmploymentHistory(models.Model):
         ('Regulator', 'Regulator'),
     ]
     nature_of_employer = models.CharField(
-    max_length=255,
-    blank=True,
-    null=True,
-    help_text=_("Select the nature of the employer")
-)
+        max_length=255,
+        choices=nature_of_employer_choice,
+        blank=True,
+        null=True,
+        help_text=_("Select the nature of the employer")
+    )
 
-    
-    types_of_aircraft_choice =[
-        ('B737-800, A320,Dash 8', 'B737-800, A320,Dash 8'),
+    types_of_aircraft_choice = [
+        ('B737-800, A320, Dash 8', 'B737-800, A320, Dash 8'),
         ('Q400, Embraer 190, Cessna 208', 'Q400, Embraer 190, Cessna 208'),
     ]
     types_of_aircraft = models.CharField(
-    max_length=255,
-    choices=types_of_aircraft_choice,
-    null=True,
-    blank=True,
-    help_text=_("Types of aircraft flown/maintained")
-)
+        max_length=255,
+        choices=types_of_aircraft_choice,
+        null=True,
+        blank=True,
+        help_text=_("Types of aircraft flown/maintained")
+    )
 
-    
-    types_of_missions_choices =[
+    types_of_missions_choices = [
         ('Domestic', 'Domestic'),
         ('International', 'International'),
         ('Long Haul', 'Long Haul'),
         ('Short Haul', 'Short Haul'),
         ('Cargo', 'Cargo'),
-        ('Vip', 'Vip'),
+        ('VIP', 'VIP'),
         ('Humanitarian', 'Humanitarian'),
         ('Military', 'Military'),
     ]
@@ -616,13 +549,12 @@ class EmploymentHistory(models.Model):
         blank=True,
         help_text=_("Scope of operations / type of missions")
     )
-    
+
     major_task_performed_choices = [
         ('Line maintenance on A320 fleet', 'Line maintenance on A320 fleet'),
         ('ATC Area Control for Nairobi FIR', 'ATC Area Control for Nairobi FIR'),
         ('Cabin Crew Safety and services on B787 long haul', 'Cabin Crew Safety and services on B787 long haul'),
     ]
-
     major_task_performed = models.CharField(
         max_length=255,
         choices=major_task_performed_choices,
@@ -631,14 +563,19 @@ class EmploymentHistory(models.Model):
         help_text=_("Major tasks performed")
     )
 
-    
+    reference_contact = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=_("Reference person and contact (e.g. Chief Pilot – captain@airline.com)")
+    )
+
     supporting_documents = models.FileField(
         upload_to="employment_references/",
         null=True,
         blank=True,
         help_text=_("Upload work references or employment letters (PDF, JPG)")
     )
-    
 
     def __str__(self):
         return f"{self.user.email} - {self.job_title} at {self.company_name}"
