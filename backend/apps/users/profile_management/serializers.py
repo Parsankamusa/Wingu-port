@@ -17,6 +17,8 @@ from .models import (
     ProfessionalRoles,
     Qualifications,
     LicensesRatings,
+    AviationCategory, 
+    RegulatoryBody,
     # OrganizationProfile,
     EmploymentHistory,
     UploadedFile
@@ -314,6 +316,15 @@ class EmploymentHistorySerializer(serializers.ModelSerializer):
             
         return instance
 
+class AviationCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AviationCategory
+        fields = '__all__'
+
+class RegulatoryBodySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegulatoryBody
+        fields = '__all__'
 
 class ProfessionalProfileSerializer(serializers.ModelSerializer):
     """Serializer for the professional user profile with all related info."""
@@ -328,13 +339,16 @@ class ProfessionalProfileSerializer(serializers.ModelSerializer):
     qualifications = QualificationsSerializer(many=True, required=False)
     licenses = LicensesRatingsSerializer(many=True, required=False)
     employment_history = EmploymentHistorySerializer(many=True, required=False)
+    aviation_categories = AviationCategorySerializer(many=True, required=False)
+    regulatory_bodies = RegulatoryBodySerializer(many=True, required=False)
     
     class Meta:
         model = User
         fields = (
             'id', 'email', 'full_name', 'first_name', 'last_name', 'profile_picture',
             'specialization', 'personal_info', 'experience', 'documents', 
-            'professional_roles', 'qualifications', 'licenses', 'employment_history'
+            'professional_roles', 'qualifications', 'licenses', 'employment_history',
+            'aviation_categories', 'regulatory_bodies'
         )
     
     def update(self, instance, validated_data):
